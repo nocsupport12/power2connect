@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Healthcare Hotline Directory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #07111F;
+    --navy-mid: #0D1E33;
+    --navy-card: #111E2E;
+    --accent: #3B82F6;
+    --accent-dim: rgba(59,130,246,.12);
+    --red: #EF4444;
+    --red-dim: rgba(239,68,68,.12);
+    --green: #22C55E;
+    --green-dim: rgba(34,197,94,.1);
+    --amber: #F59E0B;
+    --amber-dim: rgba(245,158,11,.1);
+    --purple: #A78BFA;
+    --purple-dim: rgba(167,139,250,.1);
+    --teal: #2DD4BF;
+    --teal-dim: rgba(45,212,191,.1);
+    --rose: #FB7185;
+    --rose-dim: rgba(251,113,133,.1);
+    --text: #F0F4FF;
+    --text-muted: rgba(240,244,255,.45);
+    --text-dim: rgba(240,244,255,.22);
+    --border: rgba(255,255,255,.07);
+    --border-hover: rgba(255,255,255,.14);
+    --radius: 18px;
+    --radius-sm: 12px;
+    --radius-pill: 100px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+    line-height: 1.6;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    animation: fadeUp .6s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+    animation: fadeUp .4s ease both;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-cross {
+    width: 26px;
+    height: 26px;
+    background: var(--accent);
+    border-radius: 7px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .nav-cross::before, .nav-cross::after {
+    content: '';
+    position: absolute;
+    background: #fff;
+    border-radius: 2px;
+  }
+  .nav-cross::before { width: 3px; height: 14px; left: 11.5px; top: 6px; }
+  .nav-cross::after  { width: 14px; height: 3px; left: 6px; top: 11.5px; }
+
+  .nav-tag {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-muted);
+    background: rgba(255,255,255,.06);
+    border: 1px solid var(--border);
+    padding: 5px 13px;
+    border-radius: var(--radius-pill);
+    letter-spacing: .04em;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 3rem 2.5rem 2.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp .5s .05s ease both;
+  }
+
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(59,130,246,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse at 80% 20%, black 20%, transparent 70%);
+  }
+
+  .hero-orb {
+    position: absolute;
+    right: -60px;
+    top: -60px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,130,246,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(34,197,94,.1);
+    border: 1px solid rgba(34,197,94,.25);
+    border-radius: var(--radius-pill);
+    padding: 5px 13px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--green);
+    margin-bottom: 1.25rem;
+    letter-spacing: .05em;
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 1.6s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: .4; transform: scale(.7); }
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 5vw, 46px);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -.02em;
+    margin-bottom: .75rem;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero p {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 420px;
+    margin-bottom: 2rem;
+    line-height: 1.7;
+  }
+
+  .sos-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+  .sos-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--red);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 13px 24px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity .15s, transform .15s;
+    letter-spacing: .02em;
+  }
+
+  .sos-btn:hover { opacity: .88; transform: translateY(-1px); }
+  .sos-btn:active { transform: scale(.98); }
+
+  .sos-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.8);
+    animation: pulse 1.2s infinite;
+  }
+
+  .sos-note {
+    font-size: 12px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .sos-note::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    flex-shrink: 0;
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 2rem 0 .9rem;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    color: var(--text-dim);
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+
+  .section-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── CRITICAL CARDS ── */
+  .crit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  @media (max-width: 560px) {
+    .crit-grid { grid-template-columns: 1fr; }
+  }
+
+  .crit-card {
+    background: var(--navy-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .2s, transform .2s;
+    cursor: default;
+  }
+
+  .crit-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+
+  .crit-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    opacity: 0;
+    transition: opacity .2s;
+  }
+
+  .crit-card.blue::before  { background: radial-gradient(circle at top right, var(--accent-dim), transparent 60%); }
+  .crit-card.green::before { background: radial-gradient(circle at top right, var(--green-dim), transparent 60%); }
+  .crit-card.amber::before { background: radial-gradient(circle at top right, var(--amber-dim), transparent 60%); }
+
+  .crit-card:hover::before { opacity: 1; }
+
+  .crit-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .crit-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .crit-icon.blue   { background: var(--accent-dim); }
+  .crit-icon.green  { background: var(--green-dim); }
+  .crit-icon.amber  { background: var(--amber-dim); }
+
+  .crit-icon svg { width: 18px; height: 18px; }
+
+  .avail-pill {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 4px 9px;
+    border-radius: var(--radius-pill);
+    letter-spacing: .04em;
+  }
+
+  .avail-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(34,197,94,.2); }
+  .avail-blue  { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(59,130,246,.2); }
+  .avail-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,158,11,.2); }
+
+  .crit-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .crit-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .crit-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .blue .crit-num  { color: var(--accent); }
+  .green .crit-num { color: var(--green); }
+  .amber .crit-num { color: var(--amber); }
+
+  /* ── SPECIALTY ROWS ── */
+  .spec-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .spec-row {
+    background: var(--navy-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: border-color .2s, background .2s;
+    cursor: default;
+  }
+
+  .spec-row:hover {
+    border-color: var(--border-hover);
+    background: rgba(255,255,255,.03);
+  }
+
+  .spec-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .spec-icon svg { width: 17px; height: 17px; }
+
+  .spec-mid { flex: 1; min-width: 0; }
+
+  .spec-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .spec-tag {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .spec-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    white-space: nowrap;
+    letter-spacing: -.01em;
+  }
+
+  /* ── INFO STRIP ── */
+  .info-strip {
+    margin-top: 1.5rem;
+    background: var(--accent-dim);
+    border: 1px solid rgba(59,130,246,.2);
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .info-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(59,130,246,.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .info-icon svg { width: 15px; height: 15px; }
+
+  .info-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  .info-text strong { color: var(--text); font-weight: 500; }
+
+  /* stagger card animations */
+  .crit-card:nth-child(1) { animation: fadeUp .5s .12s ease both; }
+  .crit-card:nth-child(2) { animation: fadeUp .5s .18s ease both; }
+  .crit-card:nth-child(3) { animation: fadeUp .5s .24s ease both; }
+  .spec-row:nth-child(1)  { animation: fadeUp .5s .28s ease both; }
+  .spec-row:nth-child(2)  { animation: fadeUp .5s .32s ease both; }
+  .spec-row:nth-child(3)  { animation: fadeUp .5s .36s ease both; }
+  .spec-row:nth-child(4)  { animation: fadeUp .5s .40s ease both; }
+  .spec-row:nth-child(5)  { animation: fadeUp .5s .44s ease both; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="../chatbot.php">
+      <div class="nav-arrow"></div>
+      < Back
+    </a>
+    <span class="nav-tag">Philippines · 2026</span>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-orb"></div>
+    <div class="hero-content">
+      <div class="live-badge">
+        <span class="live-dot"></span>
+        Services active now
+      </div>
+      <h1>Your health.<br><em>Connected.</em></h1>
+      <p>Immediate access to nurses, crisis counselors, and emergency responders — 24 hours a day, every day of the year.</p>
+      <div class="sos-row">
+        <a class="sos-btn" href="tel:911">
+          <span class="sos-pulse"></span>
+          Emergency — 911
+        </a>
+        <span class="sos-note">Tap to call · available 24 / 7</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITICAL LINES -->
+  <div class="section-header">
+    <span class="section-label">Critical lines</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="crit-grid">
+
+    <div class="crit-card blue">
+      <div class="crit-top">
+        <div class="crit-icon blue">
+          <svg viewBox="0 0 18 18" fill="none">
+            <circle cx="9" cy="7" r="3" stroke="#3B82F6" stroke-width="1.5"/>
+            <path d="M3 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#3B82F6" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="avail-pill avail-green">24 / 7</span>
+      </div>
+      <div class="crit-num">988</div>
+      <div class="crit-name">Mental health crisis</div>
+      <div class="crit-desc">Suicide &amp; crisis lifeline — call or text</div>
+    </div>
+
+    <div class="crit-card green">
+      <div class="crit-top">
+        <div class="crit-icon green">
+          <svg viewBox="0 0 18 18" fill="none">
+            <path d="M9 3v5M6.5 5.5h5" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round"/>
+            <rect x="3" y="3" width="12" height="12" rx="3" stroke="#22C55E" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <span class="avail-pill avail-green">24 / 7</span>
+      </div>
+      <div class="crit-num">800-555-1234</div>
+      <div class="crit-name">Nurse advice line</div>
+      <div class="crit-desc">Free for plan members — no appointment</div>
+    </div>
+
+    <div class="crit-card amber">
+      <div class="crit-top">
+        <div class="crit-icon amber">
+          <svg viewBox="0 0 18 18" fill="none">
+            <path d="M9 2l1.8 5H16L12 10l1.8 5L9 12l-4.8 3L6 10 2 7h5.2z" stroke="#F59E0B" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="avail-pill avail-green">24 / 7</span>
+      </div>
+      <div class="crit-num">800-222-1222</div>
+      <div class="crit-name">Poison control</div>
+      <div class="crit-desc">National Poison Center — overdose &amp; poisoning</div>
+    </div>
+
+  </div>
+
+  <!-- SPECIALTY -->
+  <div class="section-header">
+    <span class="section-label">Specialized support</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="spec-list">
+
+    <div class="spec-row">
+      <div class="spec-icon" style="background:var(--rose-dim)">
+        <svg viewBox="0 0 17 17" fill="none">
+          <path d="M8.5 15S2 11 2 6a4.5 4.5 0 0 1 6.5-4A4.5 4.5 0 0 1 15 6c0 5-6.5 9-6.5 9z" stroke="#FB7185" stroke-width="1.4" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="spec-mid">
+        <div class="spec-name">Domestic violence hotline</div>
+        <div class="spec-tag">Call or text · confidential · 24 / 7</div>
+      </div>
+      <div class="spec-num">800-799-7233</div>
+    </div>
+
+    <div class="spec-row">
+      <div class="spec-icon" style="background:var(--accent-dim)">
+        <svg viewBox="0 0 17 17" fill="none">
+          <rect x="3" y="2" width="11" height="13" rx="2" stroke="#3B82F6" stroke-width="1.4"/>
+          <path d="M6 6.5h5M6 9.5h5M6 12.5h3" stroke="#3B82F6" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="spec-mid">
+        <div class="spec-name">Substance abuse helpline</div>
+        <div class="spec-tag">SAMHSA · free &amp; confidential · 24 / 7</div>
+      </div>
+      <div class="spec-num">800-662-4357</div>
+    </div>
+
+    <div class="spec-row">
+      <div class="spec-icon" style="background:var(--purple-dim)">
+        <svg viewBox="0 0 17 17" fill="none">
+          <circle cx="8.5" cy="6" r="3" stroke="#A78BFA" stroke-width="1.4"/>
+          <path d="M2 15c0-3 2.9-5.5 6.5-5.5S15 12 15 15" stroke="#A78BFA" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="spec-mid">
+        <div class="spec-name">Child abuse hotline</div>
+        <div class="spec-tag">Childhelp · confidential · 24 / 7</div>
+      </div>
+      <div class="spec-num">800-422-4453</div>
+    </div>
+
+    <div class="spec-row">
+      <div class="spec-icon" style="background:var(--teal-dim)">
+        <svg viewBox="0 0 17 17" fill="none">
+          <circle cx="8.5" cy="5.5" r="2.5" stroke="#2DD4BF" stroke-width="1.4"/>
+          <path d="M3 15c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="#2DD4BF" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M12 9l1.5 1.5 2-2" stroke="#2DD4BF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="spec-mid">
+        <div class="spec-name">Maternal health line</div>
+        <div class="spec-tag">Pregnancy &amp; postpartum · Mon–Fri 9am–6pm</div>
+      </div>
+      <div class="spec-num">800-311-2229</div>
+    </div>
+
+    <div class="spec-row">
+      <div class="spec-icon" style="background:rgba(255,255,255,.05)">
+        <svg viewBox="0 0 17 17" fill="none">
+          <circle cx="8.5" cy="5.5" r="2.5" stroke="rgba(240,244,255,.5)" stroke-width="1.4"/>
+          <path d="M3 15c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="rgba(240,244,255,.5)" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M5.5 10L5 14" stroke="rgba(240,244,255,.5)" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="spec-mid">
+        <div class="spec-name">Elder care locator</div>
+        <div class="spec-tag">Senior services &amp; resources · Mon–Fri 9am–8pm ET</div>
+      </div>
+      <div class="spec-num">800-677-1116</div>
+    </div>
+
+  </div>
+
+  <!-- INFO -->
+  <div class="info-strip">
+    <div class="info-icon">
+      <svg viewBox="0 0 15 15" fill="none">
+        <circle cx="7.5" cy="7.5" r="6.5" stroke="#3B82F6" stroke-width="1.3"/>
+        <path d="M7.5 6.5v4M7.5 4.5v.5" stroke="#3B82F6" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="info-text">
+      <strong>Not sure which line to call?</strong> For any life-threatening emergency, always dial <strong>911</strong> first. For urgent but non-emergency health concerns, the <strong>nurse advice line</strong> is your best first step — they'll guide you to the right level of care.
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
